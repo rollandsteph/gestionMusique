@@ -26,6 +26,7 @@ class ArtisteController extends AbstractController
      */
     public function ficheArtiste(Artiste $artiste)
     {
+        
         return $this->render('artiste/ficheArtiste.html.twig', [
             'leArtiste' => $artiste
         ]);
