@@ -31,11 +31,16 @@ class ArtisteController extends AbstractController
 
     /**
      * @Route("/admin/artiste/ajout", name="admin_artiste_ajout", methods={"GET","POST"})
+     * @Route("/admin/artiste/modif/{id}", name="admin_artiste_modif", methods={"GET","POST"})
      */
-    public function ajoutArtiste( Request $request, EntityManagerInterface $manager)
+    public function ajoutModifArtiste(Artiste  $artiste=null, Request $request, EntityManagerInterface $manager)
     {
-
-        $artiste=new Artiste();
+        if($artiste == null){
+            $artiste=new Artiste();
+            $mode="ajouté";
+        }else{
+            $mode="modifié";
+        }
         $form=$this->createForm(ArtisteType::class, $artiste);
         $form->handleRequest($request);
         
@@ -43,12 +48,29 @@ class ArtisteController extends AbstractController
         {
             $manager->persist($artiste);
             $manager->flush();  
-            $this->addFlash("success","L'artiste a bien été ajouté");       
+            $this->addFlash("success","L'artiste a bien été $mode");       
             return $this->redirectToRoute('admin_artistes');
         }
-        return $this->render('admin/artiste/formAjoutArtiste.html.twig', [
+        return $this->render('admin/artiste/formAjoutModifArtiste.html.twig', [
             'formArtiste' => $form->createView()
+
         ]);
 
+    }
+
+    /**
+     * @Route("/admin/artiste/suppression/{id}", name="admin_artiste_suppression", methods={"GET"})
+     */
+    public function suppressionArtiste(Artiste  $artiste, EntityManagerInterface $manager)
+    {
+        $nbAlbums=$artiste->getAlbums()->count();
+        if($nbAlbums>0){
+            $this->addFlash("danger","Vous ne pouvez pas supprimer cet artiste car $nbAlbums album(s) y sont associés");       
+        }else{
+            $manager->remove($artiste);
+            $manager->flush();  
+            $this->addFlash("success","L'artiste a bien été supprimé");       
+        }
+        return $this->redirectToRoute('admin_artistes');
     }
 }
