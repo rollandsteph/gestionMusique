@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Style;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
@@ -32,4 +33,15 @@ class StyleRepository extends ServiceEntityRepository
             ->getQuery()
         ;
     }
+        /**
+     * @return QueryBuilder Returns an array of Artiste objects
+     */
+    
+    public function listeStylesSimple():QueryBuilder
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.nom', 'ASC')
+        ;
+    }
+    
 }

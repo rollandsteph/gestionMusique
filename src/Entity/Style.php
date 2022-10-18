@@ -47,7 +47,7 @@ class Style
     private $couleur;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Album::class, inversedBy="styles")
+     * @ORM\ManyToMany(targetEntity=Album::class, mappedBy="styles")
      */
     private $albums;
 
