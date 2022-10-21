@@ -48,7 +48,11 @@ class AlbumType extends AbstractType
                 'choice_label'=>'nom',
                 'label'=>"Style(s)",
                 'required'=>false,
-                'multiple'=>true
+                'multiple'=>true,
+                'by_reference'=>false,
+                'attr'=>[
+                    'class'=>"selectStyles"
+                ]
             ])
         ;
     }

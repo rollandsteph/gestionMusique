@@ -27,14 +27,14 @@ class Album
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Length(
-     *      min=1,
-     *      max=50,
-     *      minMessage="Le nom de l'album doit comporter au minimum {{ limit }} caractères",
-     *      maxMessage="Le nom de l'album doit comporter au maximum {{ limit }} caractères"
+    * @ORM\Column(type="string", length=255)
+    * @Assert\NotBlank
+    * @Assert\Length(
+    *      min=2,
+    *      max=50,
+    *      minMessage="Le nom de l'album doit comporter au minimum {{ limit }} caractères",
+    *      maxMessage="Le nom de l'album doit comporter au maximum {{ limit }} caractères"
      * )
-     * @Assert\NotBlank
      */
     private $nom;
 
@@ -67,7 +67,7 @@ class Album
     private $morceaux;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Style::class, inversedBy="albums")
+     * @ORM\ManyToMany(targetEntity=Style::class, mappedBy="albums")
         * @Assert\Count(
         *      min = "1",
         *      minMessage = "Vous devez sélectionner au moins un style"
