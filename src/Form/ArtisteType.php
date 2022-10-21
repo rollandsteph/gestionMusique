@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Artiste;
 use Symfony\Component\Form\AbstractType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -23,7 +24,9 @@ class ArtisteType extends AbstractType
                     "placeholder"=>"saisir le nom de l'artiste"
                 ]
             ])
-            ->add('description', TextareaType::class)
+            ->add('description', CKEditorType::class,[
+                'config_name'=>'config_complete'
+            ])
             ->add('site', UrlType::class)
             ->add('image', TextType::class, [
                 'required'=>false
