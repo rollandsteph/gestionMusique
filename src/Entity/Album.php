@@ -63,6 +63,7 @@ class Album
 
     /**
      * @ORM\OneToMany(targetEntity=Morceau::class, mappedBy="album")
+     * @Assert\Valid()
      */
     private $morceaux;
 

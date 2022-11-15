@@ -2,8 +2,13 @@
 
 namespace App\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
+use Faker\Factory;
+use App\Entity\Album;
+use App\Entity\Style;
+use App\Entity\Artiste;
+use App\Entity\Morceau;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 
 class AppFixtures extends Fixture
 {
