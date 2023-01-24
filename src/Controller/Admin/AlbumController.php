@@ -4,12 +4,15 @@ namespace App\Controller\Admin;
 
 use App\Entity\Album;
 use App\Form\AlbumType;
+use App\Model\FiltreAlbum;
+use App\Form\FiltreAlbumType;
 use App\Repository\AlbumRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 class AlbumController extends AbstractController
 {
     /**
@@ -17,13 +20,17 @@ class AlbumController extends AbstractController
      */
     public function listeAlbums(AlbumRepository $repo, PaginatorInterface $paginator, Request $request)
     {
+        $filtre=new FiltreAlbum();
+        $formFiltreAlbum=$this->createForm(FiltreAlbumType::class, $filtre);
+        $formFiltreAlbum->handleRequest($request);
         $albums=$paginator->paginate(
-            $repo->listeAlbumsCompletePaginee(),
+            $repo->listeAlbumsCompletePaginee($filtre),
             $request->query->getInt('page', 1), /*page number*/
             9/*limit per page*/
         );
         return $this->render('admin/album/listeAlbums.html.twig', [
-            'lesAlbums' => $albums
+            'lesAlbums' => $albums,
+            'formFiltreAlbum'=>$formFiltreAlbum->createView()
         ]);
 
     }

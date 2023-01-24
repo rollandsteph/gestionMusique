@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Album;
 use Doctrine\ORM\Query;
+use App\Model\FiltreAlbum;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
@@ -24,16 +25,40 @@ class AlbumRepository extends ServiceEntityRepository
      * @return Query Returns an array of Album objects
      */
     
-    public function listeAlbumsCompletePaginee(): ?Query
+    public function listeAlbumsCompletePaginee(FiltreAlbum $filtre=null): ?Query
     {
-        return $this->createQueryBuilder('a')
+        // dd($filtre);
+        $query= $this->createQueryBuilder('a')
             ->select('a','s','art','m')
             ->leftJoin('a.styles', 's')
             ->leftJoin('a.artiste','art')
             ->leftJoin('a.morceaux','m')
-            ->orderBy('a.nom', 'ASC')
-            ->getQuery()
+            ->orderBy('a.nom', 'ASC');
+            if(!empty($filtre->nom)){
+                $query->andWhere('a.nom like :nomcherche')
+                ->setParameter('nomcherche', "%{$filtre->nom}%");
+            }
+            if(!empty($filtre->artiste)){
+                $query->andWhere('a.artiste = :artistecherche')
+                ->setParameter('artistecherche', $filtre->artiste);
+            }
+            // if(!empty($filtre->styles)){
+            //     foreach ($filtre->styles as $key => $style) {
+            //         $query->andWhere(":styleRecherche$key MEMBER OF a.styles")
+            //         ->setParameter("styleRecherche$key", $style);      
+            //     }
+            // }
+            if(!empty($filtre->styles) && $filtre->styles->count()>0){
+                $conditions=[];
+                foreach ($filtre->styles as $key => $style) {
+                    $conditions[]= $query->expr()->isMemberOf(":styleRecherche$key","a.styles");
+                    $query->setParameter("styleRecherche$key", $style);      
+                }
+                $blocConditionsOr=$query->expr()->orX()->addMultiple($conditions);
+                $query->andWhere($blocConditionsOr);
+            }
         ;
+        return $query->getQuery();
     }
 
 
