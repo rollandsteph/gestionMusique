@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Artiste;
 use App\Form\ArtisteType;
 use App\Repository\ArtisteRepository;
+use App\Service\UploadFichierInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +34,7 @@ class ArtisteController extends AbstractController
      * @Route("/admin/artiste/ajout", name="admin_artiste_ajout", methods={"GET","POST"})
      * @Route("/admin/artiste/modif/{id}", name="admin_artiste_modif", methods={"GET","POST"})
      */
-    public function ajoutModifArtiste(Artiste  $artiste=null, Request $request, EntityManagerInterface $manager)
+    public function ajoutModifArtiste(Artiste  $artiste=null, Request $request, EntityManagerInterface $manager,UploadFichierInterface $fichierImageArtiste)
     {
         if($artiste == null){
             $artiste=new Artiste();
@@ -46,6 +47,12 @@ class ArtisteController extends AbstractController
         
         if($form->isSubmitted() && $form->isValid() )
         {
+            if($form->get('imageFile')->getData() != null) {
+                $nouveauNomImage=$fichierImageArtiste->enregistreImage($form->get('imageFile')->getData(),$artiste->getImage());
+                if($nouveauNomImage !=null){
+                    $artiste->setImage($nouveauNomImage);
+                }
+            }
             $manager->persist($artiste);
             $manager->flush();  
             $this->addFlash("success","L'artiste a bien été $mode");       

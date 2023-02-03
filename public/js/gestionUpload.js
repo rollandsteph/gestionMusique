@@ -1,9 +1,9 @@
 // on récupère le bouton de chargement
-const btnCharger=document.getElementById("chargePochette");
+const btnCharger=document.getElementById("chargeImage");
 btnCharger.addEventListener("click",lanceParcourir,false);
 
 //on récupère le champ d'upload
-const fileUpload=document.getElementById("album_imageFile");
+const fileUpload=document.getElementById("imageFile");
 fileUpload.addEventListener("change",afficheImage,false);
 
 // on récupérer le champ img qui affiche l'image

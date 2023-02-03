@@ -12,8 +12,10 @@ class ArtisteController extends AbstractController
     /**
      * @Route("/artistes", name="artistes", methods={"GET"})
      */
-    public function listeArtistes(ArtisteRepository $repo)
+    public function listeArtistes(ArtisteRepository $repo, Security $security)
     {
+        
+        $user=$security->getUser();
         $artistes=$repo->listeArtistesComplete();
         $test="test";
         return $this->render('artiste/listeArtistes.html.twig', [

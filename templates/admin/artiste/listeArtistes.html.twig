@@ -19,7 +19,7 @@
         {% for leArtiste in lesArtistes %}
             {% set nbAlbums = leArtiste.albums|length %}
             <tr>
-            <td class="col-1"><img class="avatar mx-auto  d-block " style="height: auto; width: 50px; display: block;" src=" {{leArtiste.image}} " alt="Card image"></td>
+            <td class="col-1"><img class="avatar mx-auto  d-block " style="height: auto; width: 50px; display: block;" src=" {{asset("images/artistes/" ~ leArtiste.image )}} " alt="Card image"></td>
             <td class="col-2">{{leArtiste.nom}}</td>
             <td class="col-7">
             <p class="d-flex flex-row">

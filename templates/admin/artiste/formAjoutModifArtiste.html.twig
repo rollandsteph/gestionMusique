@@ -12,16 +12,25 @@
 d'un artiste</h1>
 
 {{form_start(formArtiste,{'attr':{'novalidate':'novalidate'}})}}
-
-{{form_row(formArtiste.nom)}}
-{{form_row(formArtiste.description)}}
 <div class="row">
-  <div class="col">{{form_row(formArtiste.site)}}</div>
-  <div class="col">{{form_row(formArtiste.type)}}</div>
+  <div class="col-8">
+      {{form_row(formArtiste.nom)}}
+      {{form_row(formArtiste.site)}}
+      {{form_row(formArtiste.type)}}
+      {{form_row(formArtiste.image)}}
+  </div>
+  <div class="col-4">
+    <div>
+      <img src=" {{asset("images/artistes/" ~ formArtiste.image.vars.value)}} " id="imageAffichee" alt="" class="rounded mx-auto d-block img-thumbnail">
+    </div>
+    <div>
+      {{form_row(formArtiste.imageFile, {'id':'imageFile'})}}
+      {{form_errors(formArtiste.imageFile)}}
+      <a class="btn btn-primary d-block center" id="chargeImage"><i class="fas fa-upload"></i>  Charger la photo</a>
+    </div>
+  </div>
 </div>
-
-
-{{form_row(formArtiste.image)}}
+{{form_row(formArtiste.description)}}
 
 <div class="row">
   <div class="col"><a href="{{path('admin_artistes')}}" class="btn btn-warning btn-block">Annuler</a></div>
@@ -33,8 +42,8 @@ d'un artiste</h1>
   {% endif %}></div>
 </div>
 
-
-
-
 {{form_end(formArtiste)}}
+{% endblock %}
+{% block javascripts %}
+  <script src=" {{asset("js/gestionUpload.js")}} " defer ></script>
 {% endblock %}

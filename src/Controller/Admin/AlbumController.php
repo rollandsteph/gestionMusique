@@ -7,6 +7,7 @@ use App\Form\AlbumType;
 use App\Model\FiltreAlbum;
 use App\Form\FiltreAlbumType;
 use App\Repository\AlbumRepository;
+use App\Service\UploadFichierInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,7 +40,7 @@ class AlbumController extends AbstractController
      * @Route("/admin/album/ajout", name="admin_album_ajout", methods={"GET","POST"})
      * @Route("/admin/album/modif/{id}", name="admin_album_modif", methods={"GET","POST"})
      */
-    public function ajoutModifAlbum(Album  $album=null, Request $request, EntityManagerInterface $manager)
+    public function ajoutModifAlbum(Album  $album=null, Request $request, EntityManagerInterface $manager, UploadFichierInterface $fichierImageAlbum )
     {
         if($album == null){
             $album=new Album();
@@ -52,18 +53,11 @@ class AlbumController extends AbstractController
         
         if($form->isSubmitted() && $form->isValid() )
         {
-            //on récupére l'image sélectionnée
-            $fichierImage=$form->get('imageFile')->getData();
-            if($fichierImage != null){
-                // on supprime l'ancien fichier
-                if($album->getImage()!="pochettevierge.png"){
-                    \unlink($this->getParameter('imagesAlbumsDestination').$album->getImage());
+            if($form->get('imageFile')->getData() != null) {
+                $nouveauNomImage=$fichierImageAlbum->enregistreImage($form->get('imageFile')->getData(),$album->getImage());
+                if($nouveauNomImage !=null){
+                    $album->setImage($nouveauNomImage);
                 }
-                // On cree le nom du nouveau fichier
-                $fichier=md5(\uniqid()).".".$fichierImage->guessExtension();
-                // on déplace le fichier chargé dans le dossier public
-                $fichierImage->move($this->getParameter('imagesAlbumsDestination'),$fichier);
-                $album->setImage($fichier);
             }
             $manager->persist($album);
             $manager->flush();  

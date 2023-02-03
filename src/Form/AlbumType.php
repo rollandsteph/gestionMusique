@@ -36,8 +36,8 @@ class AlbumType extends AbstractType
                 ],
                 'constraints' => [
                         new Image([
-                            'maxSize' => '4k',
-                            'maxSizeMessage'=>"la taille maximum doit être de 4ko",
+                            'maxSize' => '500k',
+                            'maxSizeMessage'=>"la taille maximum doit être de 500ko",
                             'mimeTypes' => [
                                 'image/jpeg',
                                 'image/png'
@@ -97,4 +97,5 @@ class AlbumType extends AbstractType
             'data_class' => Album::class,
         ]);
     }
+
 }

@@ -28,9 +28,9 @@ d'un album</h1>
       <img src=" {{asset("images/albums/" ~ formAlbum.image.vars.value)}} " id="imageAffichee" alt="" class="rounded mx-auto d-block img-thumbnail">
     </div>
     <div>
-      {{form_row(formAlbum.imageFile)}}
+      {{form_row(formAlbum.imageFile, {'id':'imageFile'})}}
       {{form_errors(formAlbum.imageFile)}}
-      <a class="btn btn-primary d-block center" id="chargePochette"><i class="fas fa-upload"></i>  Charger la pochette</a>
+      <a class="btn btn-primary d-block center" id="chargeImage"><i class="fas fa-upload"></i>  Charger la pochette</a>
     </div>
   </div>
 </div>

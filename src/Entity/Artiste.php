@@ -37,7 +37,7 @@ class Artiste
      * @ORM\Column(type="text")
      * @Assert\Length(
      *      min=10,
-     *      max=15,
+     *      max=1000,
      *      minMessage="La description doit comporter au minimum {{ limit }}",
      *      maxMessage="La description doit comporter au maximum {{ limit }}"
      * )
